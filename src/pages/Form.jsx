@@ -1,10 +1,10 @@
 import { useState} from 'react';
-import useBookStorage from '../hooks/useBookStorage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import DisplayData from '../components/DispalyData';
 import BookForm from '../components/BookForm';
 import 'bootstrap/dist/css/bootstrap.css';
 import Header from '../components/header';
+import { useBook } from '../context/BookContext';
 
 
 const Form = () => {
@@ -21,7 +21,7 @@ const Form = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
 
-  const {readBooks, unreadBooks, removeBook, addBook, updateBookInLists, toggleReadStatus} = useBookStorage();
+  const {readBooks, unreadBooks, removeBook, addBook, updateBookInLists, toggleReadStatus} = useBook()
 
   const HandleSubmit = (e) => {
     e.preventDefault();

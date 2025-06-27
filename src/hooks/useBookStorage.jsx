@@ -83,7 +83,7 @@ export default function useBookStorage() {
     let targetList = JSON.parse(localStorage.getItem(currentKey)) ?? [];
     let sourceList = JSON.parse(localStorage.getItem(otherKey)) ?? [];
   
-    sourceList = sourceList.filter(book => book.id !== book.id);
+    sourceList = sourceList.filter(b => b.id !== book.id);
     localStorage.setItem(otherKey,JSON.stringify(sourceList))
 
     targetList = [updatedBook, ...targetList];
