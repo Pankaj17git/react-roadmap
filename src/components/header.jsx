@@ -12,6 +12,7 @@ const Header = () => {
               <Link className="nav-link" to="/">Bookshelf</Link>
               <Link className="nav-link" to="/json">JsonForm</Link>
               <Link className="nav-link" to="/apps">App</Link>
+              <Link className="nav-link" to="/userForm">UserForm</Link>
             </li>
           </ul>
         </nav>

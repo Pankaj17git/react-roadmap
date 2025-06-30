@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import Header from "../components/header";
-import UserForm from '../components/DisplayJson';
+import UserForm from '../components/JSONForm';
 
 const JsonForm = () => {
   const URL = import.meta.env.VITE_BASE_URL;
