@@ -28,7 +28,7 @@ const Form = () => {
 
     const newBook = {
       ...books,
-      id: Date.now().toString(), // ✅ generated only once
+      id: Date.now().toString(), //  generated only once
       isComplete: read ? 1 : 0,
     };
 

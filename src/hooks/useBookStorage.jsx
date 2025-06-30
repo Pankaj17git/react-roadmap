@@ -1,6 +1,5 @@
 /* eslint-disable no-debugger */
 import { useState, useEffect } from "react";
-import DisplayData from "../components/DispalyData";
 
 export default function useBookStorage() {
   const [readBooks, setReadBooks] = useState([]);
@@ -13,6 +12,7 @@ export default function useBookStorage() {
     setUnreadBooks(unreadData);
     setReadBooks(readData);
     console.log('rendered');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addBook = (book) => {
