@@ -34,7 +34,7 @@ const DisplayJsonData = ({ removeUser, onEdit }) => {
             <td>
               <button
                 className="btn btn-sm btn-danger"
-                onClick={() => removeUser(user.id)}
+                onClick={() => removeUser(user.id,setUsers)}
               >
                 <i className="fa fa-trash"></i>
               </button>

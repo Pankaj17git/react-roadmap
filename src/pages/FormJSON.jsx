@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
+import { v4 as uuidv4 } from "uuid";
 import Header from "../components/header";
 import UserForm from '../components/JSONForm';
 import useUserStorage from "../hooks/useUserStorage";
@@ -7,7 +8,7 @@ import useUserStorage from "../hooks/useUserStorage";
 const JsonForm = () => {
   const URL = import.meta.env.VITE_BASE_URL;
   const [formData, setFormData] = useState({
-    id: Date.now().toString(),
+    id: '',
     name: "",
     username: "",
     email: "",
@@ -16,7 +17,7 @@ const JsonForm = () => {
     website: "",
   });
 
-  const { addUser} = useUserStorage();
+  const { addUser } = useUserStorage();
 
   const handleChange = (e) => {
     setFormData({
@@ -25,11 +26,16 @@ const JsonForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    addUser(formData, setFormData);
-    clearForm();
+    const newUser = {
+      ...formData,
+      id: uuidv4().split("-")[0],
+    };
+
+    addUser(newUser, setFormData);
+
     console.log("Form submitted:", formData);
   };
 
@@ -44,19 +50,6 @@ const JsonForm = () => {
   //   const data = await res.json();
   //   setFormData(data);
   // };
-
-  const clearForm = () => {
-    setFormData({
-      id: '',
-      name: "",
-      username: "",
-      email: "",
-      address: "",
-      phone: "",
-      website: "",
-    })
-  }
-
 
   useEffect(() => {
     console.log(URL);
