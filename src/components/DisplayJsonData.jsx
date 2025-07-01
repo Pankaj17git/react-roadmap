@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const DisplayJsonData = ({ removeData, onEdit, toggleReadStatus }) => {
+const DisplayJsonData = ({ removeUser, onEdit }) => {
   const URL = import.meta.env.VITE_BASE_URL;
   const [users, setUsers] = useState([]);
   useEffect(() => {
@@ -9,7 +9,7 @@ const DisplayJsonData = ({ removeData, onEdit, toggleReadStatus }) => {
       .then(res => res.json())
       .then(data => setUsers(data)
     );
-  }, [])
+  }, [URL]);
   return (
     <>
       {
@@ -25,14 +25,6 @@ const DisplayJsonData = ({ removeData, onEdit, toggleReadStatus }) => {
             <td>{user.website}</td>
             <td>
               <button
-                className="btn btn-sm btn-warning"
-                onClick={() => toggleReadStatus(user)}
-              >
-                <i className="fa fa-check"></i>
-              </button>
-            </td>
-            <td>
-              <button
                 className="btn btn-sm btn-success"
                 onClick={() => onEdit(user)}
               >
@@ -42,7 +34,7 @@ const DisplayJsonData = ({ removeData, onEdit, toggleReadStatus }) => {
             <td>
               <button
                 className="btn btn-sm btn-danger"
-                onClick={() => removeData(user.id)}
+                onClick={() => removeUser(user.id)}
               >
                 <i className="fa fa-trash"></i>
               </button>

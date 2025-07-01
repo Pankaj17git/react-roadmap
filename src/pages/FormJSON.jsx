@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import Header from "../components/header";
 import UserForm from '../components/JSONForm';
+import useUserStorage from "../hooks/useUserStorage";
 
 const JsonForm = () => {
   const URL = import.meta.env.VITE_BASE_URL;
@@ -15,6 +16,8 @@ const JsonForm = () => {
     website: "",
   });
 
+  const { addUser} = useUserStorage();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -25,22 +28,22 @@ const JsonForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    addUser(formData);
+    addUser(formData, setFormData);
     clearForm();
     console.log("Form submitted:", formData);
   };
 
-  const addUser = async (newUser) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
-    const res = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser)
-    });
-    const data = await res.json();
-    setFormData(data);
-  };
+  // const addUser = async (newUser) => {
+  //   // eslint-disable-next-line no-debugger
+  //   debugger;
+  //   const res = await fetch(URL, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(newUser)
+  //   });
+  //   const data = await res.json();
+  //   setFormData(data);
+  // };
 
   const clearForm = () => {
     setFormData({
