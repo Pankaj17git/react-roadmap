@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 
 const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm({ 
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
     mode: "onBlur",
     defaultValues: defaultValues || {
       name: "",
@@ -16,9 +16,20 @@ const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
     }
   });
 
+  useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
+
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="container-sm mt-4 border rounded" style={{ width: '60%', padding: '20px' }}>
+    <form onSubmit={handleSubmit((data) => {
+      onSubmit(data);
+      reset(); // Reset the form after submission
+    })} className="container-sm mt-4 border rounded" style={{ width: '60%', padding: '20px' }}>
+
+      <input type="hidden" {...register("id")}/>
 
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
@@ -87,7 +98,7 @@ const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
           id="address"
           name="address"
           placeholder="Enter Address"
-          {...register('address', { required: true})}
+          {...register('address', { required: true })}
         />
       </div>
 
@@ -101,7 +112,7 @@ const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
           id="phone"
           name="phone"
           placeholder="Enter Phone Number"
-          {...register('phone', { required: true})}
+          {...register('phone', { required: true })}
         />
       </div>
 

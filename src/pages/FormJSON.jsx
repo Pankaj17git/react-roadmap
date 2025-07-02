@@ -7,9 +7,6 @@ import { useUser } from "../context/UserContext";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 
-
-
-
 const JsonForm = () => {
   const [defaultValues, setDefaultValues] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +20,7 @@ const JsonForm = () => {
   useEffect(() => {
     const userToEdit = location.state?.userToEdit;
     const editing = location.state?.isEditing;
+    console.log('usertoEdit id is:', userToEdit?.id);
 
     if (editing && userToEdit) {
       setIsEditing(true);
@@ -37,22 +35,26 @@ const JsonForm = () => {
   // Handle form submission
   // If isEditing is true, update the user; otherwise, add a new user
   const handleSubmit = async (data) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const mergedData = {
+      ...data,
+      id: defaultValues?.id || uuidv4().split("-")[0]
+    };
 
     if (isEditing) {
       //update existing user
-      await updateUser(data.id, data);
+      await updateUser(mergedData.id, mergedData);
       navigate("/userForm");
-      setDefaultValues('');
       setIsEditing(false);
       alert("User updated successfully!");
     } else {
       //add new user
-      const newUser = { ...data, id: uuidv4().split("-")[0] };
-      addUser(newUser, setDefaultValues)
+      addUser(mergedData, setDefaultValues)
     }
   };
 
- 
+
   useEffect(() => {
     console.log(URL);
 
@@ -73,7 +75,7 @@ const JsonForm = () => {
 
         <div className="card" style={{ border: "none" }}>
           <div className="card-body">
-            <UserForm 
+            <UserForm
               onSubmit={handleSubmit}
               defaultValues={defaultValues}
               isEdit={isEditing}

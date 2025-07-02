@@ -32,11 +32,6 @@ const useUserStorage = () => {
         return; // stop further execution
       }
 
-      if (!newUser.name || !newUser.username || !newUser.email) {
-        alert("Please fill in all required fields.");
-        return; // stop further execution
-      }
-
       //  If no duplicates, save the new user
       const res = await fetch(URL, {
         method: "POST",
