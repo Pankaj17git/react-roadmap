@@ -1,7 +1,7 @@
 import React from "react";
 
-const UserForm = ({ formData, handleChange, handleSubmit, isEdit, }) => {
 
+const UserForm = ({ formData, handleChange, handleSubmit, isEdit, }) => {
 
   return (
     <form onSubmit={handleSubmit} className="container-sm mt-4 border rounded" style={{ width: '60%', padding: '20px' }}>
@@ -96,8 +96,9 @@ const UserForm = ({ formData, handleChange, handleSubmit, isEdit, }) => {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary">
-        {isEdit ? "Update" : "Submit"}
+      <button type="submit" className={`btn btn-${isEdit ? "warning" : "primary"}`}>
+        {isEdit ? "Update"  : "Submit"}
+
       </button>
 
     </form>

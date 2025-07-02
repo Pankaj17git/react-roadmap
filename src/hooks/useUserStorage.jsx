@@ -100,7 +100,7 @@ const useUserStorage = () => {
     }
   };
 
-  const updateUser = async (id, updateUserData, setUsers) => {
+  const updateUser = async (id, updateUserData) => {
     try {
       const res = await fetch(`${URL}/${id}`, {
         method: "PUT",
@@ -113,16 +113,15 @@ const useUserStorage = () => {
       }
 
       const updatedUser = await res.json();
-      setUsers((prevUsers) =>
-        prevUsers.map((user) => (user.id === id ? updatedUser : user))
-      );
+
+      console.log("Updated user:", updatedUser);
+
     } catch (error) {
       console.error("Error updating user:", error);
       alert("An error occurred while updating the user.");
     }
+  };
 
-    resetFormData(setUsers);
-  }
 
   return {
     addUser,

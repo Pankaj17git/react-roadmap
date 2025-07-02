@@ -5,6 +5,8 @@ import Header from "../components/header";
 import UserForm from '../components/JSONForm';
 import useUserStorage from "../hooks/useUserStorage";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router";
+
 
 
 
@@ -22,6 +24,7 @@ const JsonForm = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const { addUser, updateUser } = useUserStorage();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userToEdit = location.state?.userToEdit;
@@ -64,12 +67,14 @@ const JsonForm = () => {
 
     const updatedUser = { ...formData };
 
-    await updateUser(updatedUser.id, updatedUser, setFormData); // You must implement this in your storage hook
+    await updateUser(updatedUser.id, updatedUser); // You must implement this in your storage hook
 
     alert("User updated successfully!");
 
     setIsEditing(false);
     resetFormData();
+
+    navigate("/userForm"); // Redirect to the users page after update
   };
 
   const resetFormData = () => {
@@ -109,7 +114,7 @@ const JsonForm = () => {
             <UserForm formData={formData}
               handleChange={handleChange}
               handleSubmit={isEditing ? handleUpdate : handleSubmit}
-              isEditing={isEditing}
+              isEdit={isEditing}
               setFormData={setFormData}
             />
           </div>
