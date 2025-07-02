@@ -1,8 +1,10 @@
 import React from "react";
 
-const UserForm = ({ formData, handleChange, handleSubmit }) => {
+const UserForm = ({ formData, handleChange, handleSubmit, isEdit, }) => {
+
+
   return (
-    <form onSubmit={handleSubmit} className="container-sm mt-4 border rounded" style={{width: '60%', padding: '20px'}}>
+    <form onSubmit={handleSubmit} className="container-sm mt-4 border rounded" style={{ width: '60%', padding: '20px' }}>
 
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
@@ -95,8 +97,9 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
       </div>
 
       <button type="submit" className="btn btn-primary">
-        Submit
+        {isEdit ? "Update" : "Submit"}
       </button>
+
     </form>
   );
 };

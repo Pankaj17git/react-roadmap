@@ -4,9 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import Header from "../components/header";
 import UserForm from '../components/JSONForm';
 import useUserStorage from "../hooks/useUserStorage";
+import { useLocation } from "react-router-dom";
+
+
 
 const JsonForm = () => {
   const URL = import.meta.env.VITE_BASE_URL;
+  const location = useLocation();
   const [formData, setFormData] = useState({
     id: '',
     name: "",
@@ -16,8 +20,23 @@ const JsonForm = () => {
     phone: "",
     website: "",
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const { addUser, updateUser } = useUserStorage();
 
-  const { addUser } = useUserStorage();
+  useEffect(() => {
+    const userToEdit = location.state?.userToEdit;
+    const editing = location.state?.isEditing;
+
+    if (editing && userToEdit) {
+      setIsEditing(true);
+      setFormData(userToEdit);
+    } else {
+      setIsEditing(false);
+      resetFormData();
+    }
+  }, [location.state]);
+
+
 
   const handleChange = (e) => {
     setFormData({
@@ -37,55 +56,43 @@ const JsonForm = () => {
     addUser(newUser, setFormData);
 
     console.log("Form submitted:", formData);
+    resetFormData();
   };
 
-  // const addUser = async (newUser) => {
-  //   // eslint-disable-next-line no-debugger
-  //   debugger;
-  //   const res = await fetch(URL, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(newUser)
-  //   });
-  //   const data = await res.json();
-  //   setFormData(data);
-  // };
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    const updatedUser = { ...formData };
+
+    await updateUser(updatedUser.id, updatedUser, setFormData); // You must implement this in your storage hook
+
+    alert("User updated successfully!");
+
+    setIsEditing(false);
+    resetFormData();
+  };
+
+  const resetFormData = () => {
+    setFormData({
+      id: "",
+      name: "",
+      username: "",
+      email: "",
+      address: "",
+      phone: "",
+      website: "",
+    });
+  };
+
+
 
   useEffect(() => {
     console.log(URL);
 
     fetch(URL)
       .then(res => res.json())
-      .then(data => console.log(data)
-
-      );
+      .then(data => console.log(data));
   }, [])
-
-  // const handleDelete = () => {
-  //   fetch('http://localhost:3001/users/4', {
-  //     method: 'DELETE',
-  //   })
-  //   .then(response => {
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-  //     if (response.status === 204) {
-  //       console.log('Deleted successfully, no content returned.');
-  //       return null;
-  //     }
-  //     return response.json();
-  //   })
-  //   .then(data => {
-  //     if (data) {
-  //       console.log('Response data:', data);
-  //     }
-  //   })
-  //   .catch(err => {
-  //     console.log('Error:', err.message);
-  //   });
-  // };
-
-
 
   return (
     <>
@@ -101,7 +108,9 @@ const JsonForm = () => {
           <div className="card-body">
             <UserForm formData={formData}
               handleChange={handleChange}
-              handleSubmit={handleSubmit}
+              handleSubmit={isEditing ? handleUpdate : handleSubmit}
+              isEditing={isEditing}
+              setFormData={setFormData}
             />
           </div>
         </div>

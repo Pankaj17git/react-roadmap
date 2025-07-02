@@ -3,16 +3,71 @@ const URL = import.meta.env.VITE_BASE_URL;
 
 const useUserStorage = () => {
   const addUser = async (newUser, setFormData) => {
-    // eslint-disable-next-line no-debugger
-    // debugger;
-    const res = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser)
+    try {
+      //  Fetch all existing users
+      const existingRes = await fetch(URL);
+      const existingUsers = await existingRes.json();
+
+      //  Check for duplicates
+      const emailExists = existingUsers.some(
+        (u) => u.email === newUser.email
+      );
+      const usernameExists = existingUsers.some(
+        (u) => u.username === newUser.username
+      );
+      const phoneExists = existingUsers.some(
+        (u) => u.phone === newUser.phone
+      );
+
+      //  If any duplicate, show error and return
+      if (emailExists || usernameExists || phoneExists) {
+        let errorMessage = "Please correct the following:\n";
+        if (emailExists) errorMessage += "- Email already exists.\n";
+        if (usernameExists) errorMessage += "- Username already exists.\n";
+        if (phoneExists) errorMessage += "- Phone number already exists.\n";
+
+        alert(errorMessage);
+        return; // stop further execution
+      }
+
+      if (!newUser.name || !newUser.username || !newUser.email) {
+        alert("Please fill in all required fields.");
+        return; // stop further execution
+      }
+
+      //  If no duplicates, save the new user
+      const res = await fetch(URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser)
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      //  Update formData
+      setFormData(data);
+
+    } catch (error) {
+      console.error("Error adding user:", error);
+      alert("An error occurred while adding the user.");
+    }
+    resetFormData(setFormData);
+  };
+
+  const resetFormData = (setFormData) => {
+    setFormData({
+      id: "",
+      name: "",
+      username: "",
+      email: "",
+      address: "",
+      phone: "",
+      website: "",
     });
-    const data = await res.json();
-   
-    setFormData(data);
   };
 
 
@@ -38,7 +93,6 @@ const useUserStorage = () => {
           }
         })
 
-
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
       return res;
     } catch (err) {
@@ -46,9 +100,34 @@ const useUserStorage = () => {
     }
   };
 
+  const updateUser = async (id, updateUserData, setUsers) => {
+    try {
+      const res = await fetch(`${URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateUserData)
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const updatedUser = await res.json();
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id === id ? updatedUser : user))
+      );
+    } catch (error) {
+      console.error("Error updating user:", error);
+      alert("An error occurred while updating the user.");
+    }
+
+    resetFormData(setUsers);
+  }
+
   return {
     addUser,
     removeUser,
+    updateUser
   }
 }
 

@@ -1,15 +1,23 @@
 import { useState, useEffect } from "react";
-
-const DisplayJsonData = ({ removeUser, onEdit }) => {
+import { useNavigate } from "react-router";
+const DisplayJsonData = ({ removeUser }) => {
   const URL = import.meta.env.VITE_BASE_URL;
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     console.log(URL);
     fetch(URL)
       .then(res => res.json())
       .then(data => setUsers(data)
-    );
+      );
   }, [URL]);
+
+  const onEdit = (user) => {
+    console.log("user to edit:", user);
+    navigate("/json", { state: { userToEdit: user, isEditing: true } });
+  };
+
+
   return (
     <>
       {
@@ -34,7 +42,7 @@ const DisplayJsonData = ({ removeUser, onEdit }) => {
             <td>
               <button
                 className="btn btn-sm btn-danger"
-                onClick={() => removeUser(user.id,setUsers)}
+                onClick={() => removeUser(user.id, setUsers)}
               >
                 <i className="fa fa-trash"></i>
               </button>
