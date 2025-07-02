@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { v4 as uuidv4 } from "uuid";
 import Header from "../components/header";
 import UserForm from '../components/JSONForm';
-import useUserStorage from "../hooks/useUserStorage";
+import { useUser } from "../context/UserContext";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 
@@ -11,8 +11,6 @@ import { useNavigate } from "react-router";
 
 
 const JsonForm = () => {
-  const URL = import.meta.env.VITE_BASE_URL;
-  const location = useLocation();
   const [formData, setFormData] = useState({
     id: '',
     name: "",
@@ -23,9 +21,13 @@ const JsonForm = () => {
     website: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-  const { addUser, updateUser } = useUserStorage();
+  const { addUser, updateUser } = useUser();
+  const URL = import.meta.env.VITE_BASE_URL;
+  const location = useLocation();
   const navigate = useNavigate();
 
+
+  // Reset form data when the component mounts or when location.state changes
   useEffect(() => {
     const userToEdit = location.state?.userToEdit;
     const editing = location.state?.isEditing;
@@ -40,7 +42,7 @@ const JsonForm = () => {
   }, [location.state]);
 
 
-
+  // Handle form data changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -48,6 +50,8 @@ const JsonForm = () => {
     });
   };
 
+  // Handle form submission
+  // If isEditing is true, update the user; otherwise, add a new user
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,10 +62,13 @@ const JsonForm = () => {
 
     addUser(newUser, setFormData);
 
-    console.log("Form submitted:", formData);
+    console.log("Form submitted:", newUser);
+
+
     resetFormData();
   };
 
+  // Handle user update
   const handleUpdate = async (e) => {
     e.preventDefault();
 
