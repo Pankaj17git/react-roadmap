@@ -3,6 +3,8 @@ const URL = import.meta.env.VITE_BASE_URL;
 
 const useUserStorage = () => {
   const addUser = async (newUser, setFormData) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
     try {
       //  Fetch all existing users
       const existingRes = await fetch(URL);

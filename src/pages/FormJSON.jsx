@@ -11,15 +11,7 @@ import { useNavigate } from "react-router";
 
 
 const JsonForm = () => {
-  const [formData, setFormData] = useState({
-    id: '',
-    name: "",
-    username: "",
-    email: "",
-    address: "",
-    phone: "",
-    website: "",
-  });
+  const [defaultValues, setDefaultValues] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const { addUser, updateUser } = useUser();
   const URL = import.meta.env.VITE_BASE_URL;
@@ -34,70 +26,33 @@ const JsonForm = () => {
 
     if (editing && userToEdit) {
       setIsEditing(true);
-      setFormData(userToEdit);
+      setDefaultValues(userToEdit);
     } else {
       setIsEditing(false);
-      resetFormData();
+      setDefaultValues(null);
     }
   }, [location.state]);
 
 
-  // Handle form data changes
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   // Handle form submission
   // If isEditing is true, update the user; otherwise, add a new user
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (data) => {
 
-    const newUser = {
-      ...formData,
-      id: uuidv4().split("-")[0],
-    };
-
-    addUser(newUser, setFormData);
-
-    console.log("Form submitted:", newUser);
-
-
-    resetFormData();
+    if (isEditing) {
+      //update existing user
+      await updateUser(data.id, data);
+      navigate("/userForm");
+      setDefaultValues('');
+      setIsEditing(false);
+      alert("User updated successfully!");
+    } else {
+      //add new user
+      const newUser = { ...data, id: uuidv4().split("-")[0] };
+      addUser(newUser, setDefaultValues)
+    }
   };
 
-  // Handle user update
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    const updatedUser = { ...formData };
-
-    await updateUser(updatedUser.id, updatedUser); // You must implement this in your storage hook
-
-    alert("User updated successfully!");
-
-    setIsEditing(false);
-    resetFormData();
-
-    navigate("/userForm"); // Redirect to the users page after update
-  };
-
-  const resetFormData = () => {
-    setFormData({
-      id: "",
-      name: "",
-      username: "",
-      email: "",
-      address: "",
-      phone: "",
-      website: "",
-    });
-  };
-
-
-
+ 
   useEffect(() => {
     console.log(URL);
 
@@ -118,11 +73,10 @@ const JsonForm = () => {
 
         <div className="card" style={{ border: "none" }}>
           <div className="card-body">
-            <UserForm formData={formData}
-              handleChange={handleChange}
-              handleSubmit={isEditing ? handleUpdate : handleSubmit}
+            <UserForm 
+              onSubmit={handleSubmit}
+              defaultValues={defaultValues}
               isEdit={isEditing}
-              setFormData={setFormData}
             />
           </div>
         </div>
