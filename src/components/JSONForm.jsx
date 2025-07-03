@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Button from "./Button";
 
-const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
+const UserForm = ({ onSubmit, isEdit, defaultValues,setIsEditing }) => {
   const {
     register,
     handleSubmit,
@@ -42,7 +43,9 @@ const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
     }
   };
 
-
+  const handleReset = () => {
+    setIsEditing(false);
+  }
   const languageOptions = [
     "JavaScript",
     "Python",
@@ -266,16 +269,25 @@ const UserForm = ({ onSubmit, isEdit, defaultValues }) => {
         ))}
       </div>
 
-      <div className="text-center mt-4">
+      <div className=" mt-4">
         <button
           type="submit"
           className={`btn btn-${isEdit ? "warning" : "primary"} px-4`}
         >
           {isEdit ? "Update" : "Submit"}
         </button>
+        {isEdit && (
+          <button
+            type="button"
+            className="btn btn-secondary ms-2 px-4"
+            onClick={() => handleReset() }
+          >
+            Cancle
+          </button>
+        )}
       </div>
     </form>
   );
 };
 
-export default UserForm;
+  export default UserForm;

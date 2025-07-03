@@ -79,6 +79,7 @@ const JsonForm = () => {
               onSubmit={handleSubmit}
               defaultValues={defaultValues}
               isEdit={isEditing}
+              setIsEditing={setIsEditing}
             />
           </div>
         </div>
