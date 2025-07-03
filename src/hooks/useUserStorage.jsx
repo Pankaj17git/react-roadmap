@@ -64,6 +64,10 @@ const useUserStorage = () => {
       address: "",
       phone: "",
       website: "",
+      photo: null,
+      gender: "",
+      dob: "",
+      languages: [],
     });
   };
 
@@ -118,7 +122,6 @@ const useUserStorage = () => {
       alert("An error occurred while updating the user.");
     }
   };
-
 
   return {
     addUser,

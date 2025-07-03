@@ -12,12 +12,16 @@ const DisplayUsers = () => {
           <thead>
             <tr>
               <th>No</th>
+              <th>Photo</th>
               <th>Name</th>
               <th>Username</th>
               <th>Eamil</th>
               <th>Address</th>
               <th>Phone</th>
               <th>Website</th>
+              <th>Gender</th>
+              <th>D.O.B</th>
+              <th>Languages</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>

@@ -10,7 +10,7 @@ const DisplayJsonData = ({ removeUser }) => {
   useEffect(() => {
     console.log(URL);
     fetch(URL)
-      .then(res => res.json()) 
+      .then(res => res.json())
       .then(data => setUsers(data)
       );
   }, [URL]);
@@ -29,12 +29,23 @@ const DisplayJsonData = ({ removeUser }) => {
 
           <tr key={user.id}>
             <td>{id + 1}</td>
+            <td>
+              <img
+                src={user.photo}
+                alt={user.name}
+                className="img-fluid rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+              />
+            </td>
             <td>{user.name}</td>
             <td>{user.username}</td>
             <td>{user.email}</td>
             <td>{user.address}</td>
             <td>{user.phone}</td>
             <td>{user.website}</td>
+            <td>{user.gender}</td>
+            <td>{user.dob}</td>
+            <td>{user.languages}</td>
             <td>
               <button
                 className="btn btn-sm btn-success"
