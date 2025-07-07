@@ -143,6 +143,24 @@
         "Go",
         "Rust"
       ]
+    },
+    {
+      "id": "1bcd0d46",
+      "name": "Bethany Bowen",
+      "username": "javosu",
+      "email": "biguwagam@mailinator.com",
+      "address": "Fugiat voluptate pro",
+      "phone": "+1 (422) 314-4944",
+      "website": "https://www.gawuq.me.uk",
+      "photo": null,
+      "gender": "female",
+      "dob": "2018-05-20",
+      "languages": [
+        "JavaScript",
+        "C++",
+        "Go",
+        "Rust"
+      ]
     }
   ]
 }
